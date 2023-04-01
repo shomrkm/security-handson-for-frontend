@@ -102,3 +102,13 @@ dist
 
 # TernJS port file
 .tern-port
+
+# VSCode history file
+.history/
+
+# Drawio file
+doc/.drawio-chrome/
+backend/config/.env
+
+# meta data file
+.DS_Store

@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  api:
+    container_name: security-handson
+    build: .
+    tty: true
+    working_dir: /usr/src/security-handson
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/usr/src/security-handson:cached
+      - node_modules:/usr/src/security-handson/node_modules
+
+volumes:
+  node_modules: {}

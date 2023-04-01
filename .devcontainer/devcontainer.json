@@ -1,0 +1,17 @@
+{
+  "name": "security-handson",
+  "dockerComposeFile": ["../docker-compose.yml"],
+  "settings": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    }
+  },
+  "service": "api",
+  "extensions": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode"
+  ],
+  "workspaceFolder": "/usr/src/security-handson",
+  "shutdownAction": "stopCompose"
+}
