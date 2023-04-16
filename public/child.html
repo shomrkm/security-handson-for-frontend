@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <h1>Child Page</h1>
+        <script>
+            window.addEventListener("message", (event) => {
+                if(event.origin === "http://localhost:3000" || event.origin === "http://site.example:3000") {
+                    alert(event.data);
+                    event.source.postMessage("Message from child: Hello parent!", event.origin);
+                }
+            });
+        </script>
+    </body>
+</html>
