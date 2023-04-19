@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>XSS検証ページ</title>
+        <script src="./purify.js"></script>
     </head>
     <body>
         <h1>XSS検証ページ</h1>
@@ -11,8 +12,15 @@
             const url = new URL(location.href);
             const message = url.searchParams.get("message");
             if(message !== null) {
-                const textNode = document.createTextNode(message);
-                document.querySelector("#result").appendChild(textNode);
+                // DOMPurify を使って文字列を無害化
+                // ただし、javascript を挿入するXSS脆弱性には対応していない
+                const sanitizedMessage = DOMPurify.sanitize(message);
+                document.querySelector("#result").innerHTML == sanitizedMessage;
+
+                // 以下の方法でもOK
+                // const textNode = document.createTextNode(message);
+                // document.querySelector("#result").appendChild(textNode);
+
                 // 以下の方法でもOK
                 // document.querySelector("#result").textContent == message;
 
