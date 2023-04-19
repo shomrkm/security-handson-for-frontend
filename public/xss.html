@@ -19,6 +19,17 @@
                 // 以下は XSS の危険性があるコード
                 // document.querySelector("#result").innerHTML = message;
             }
+
+            const urlStr = url.searchParams.get("url");
+            if(urlStr !== null) {
+                const linkUrl = new URL(urlStr, url.origin);
+                // スキーム名をチェックすることで XSS攻撃を防ぐ
+                if(linkUrl.protocol === 'http:' || linkUrl.protocol === 'https:') {
+                    document.querySelector("#link").href = linkUrl;
+                } else {
+                    console.warn("http または https 以外の URL が指定されています。")
+                }
+            }
         </script>
     </body>
 </html>
