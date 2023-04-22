@@ -16,11 +16,16 @@ app.get("/csp", (req, res) => {
 
     // リクエストのたびに毎回ランダムな文字列を生成し、CSP ヘッダ値に設定する
     const nonceValue = crypto.randomBytes(16).toString("base64");
-    res.header("Content-Security-Policy", `script-src 'nonce-${nonceValue}'`);
+    // object-src: Flash などのプラグインに対する制限をするディレクティブ
+    // base-uri: <base> 要素に対する制限をするディレクティブ
+    res.header("Content-Security-Policy",
+        `script-src 'nonce-${nonceValue}' 'strict-dynamic';` + 
+        "object-src 'none';" + 
+        "base-uri 'none'"
+        );
 
     // 明示的に unsafe-inline, nonce-source, hash-source などが指定されていないページでは、HTML内のインラインスクリプトなどは実行されない
     // res.header("Content-Security-Policy", "script-src 'self'");
-
 
     // 第2引数で nonce 値を HTML へ渡す
     res.render("csp", { nonce: nonceValue });

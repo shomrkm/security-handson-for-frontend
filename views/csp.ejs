@@ -6,7 +6,11 @@
     <body>
         <!-- サーバから渡した nonce 属性を埋め込む -->
         <script nonce="<%= nonce %>">
-            alert('Hello CSP!');
+            // alert('Hello CSP!');
+
+            const script = document.createElement("script");
+            script.src = "./csp-test.js";
+            document.body.appendChild(script);
         </script>
     </body>
 </html>
