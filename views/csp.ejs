@@ -6,11 +6,26 @@
     <body>
         <!-- サーバから渡した nonce 属性を埋め込む -->
         <script nonce="<%= nonce %>">
-            // alert('Hello CSP!');
-
-            const script = document.createElement("script");
-            script.src = "./csp-test.js";
-            document.body.appendChild(script);
+            if (window.trustedTypes && trustedTypes.createPolicy) {
+                // ポリシーを定義する
+                const policy = trustedTypes.createPolicy("script-url", {
+                    createScriptURL: (str) => {
+                        // str の URL 文字列から Origin を取得するために URL オブジェクトにする
+                        const url = new URL(str, location.origin);
+                        if(url.origin !== location.origin) {
+                            // クロスオリジンの場合エラーにする
+                            throw new Error("クロスオリジンは許可されていません。");
+                        }
+                        // 同一オリジンの場合のみ URL を返す
+                        return url;
+                    }
+                });
+                const script = document.createElement("script");
+                // 作成したポリシー関数によって検査され、
+                // TrustedScriptURL へ変換された値は代入可能になる
+                script.src = policy.createScriptURL("http://site.example:3000/csp-test.js");
+                document.body.appendChild(script);
+            }
         </script>
     </body>
 </html>

@@ -21,7 +21,9 @@ app.get("/csp", (req, res) => {
     res.header("Content-Security-Policy",
         `script-src 'nonce-${nonceValue}' 'strict-dynamic';` + 
         "object-src 'none';" + 
-        "base-uri 'none'"
+        "base-uri 'none';" +
+        "require-trusted-types-for 'script';"
+
         );
 
     // 明示的に unsafe-inline, nonce-source, hash-source などが指定されていないページでは、HTML内のインラインスクリプトなどは実行されない
