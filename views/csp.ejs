@@ -4,7 +4,8 @@
         <title>CSP 検証ページ</title>
     </head>
     <body>
-        <script>
+        <!-- サーバから渡した nonce 属性を埋め込む -->
+        <script nonce="<%= nonce %>">
             alert('Hello CSP!');
         </script>
     </body>

@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 const express = require('express');
 const api = require('./routes/api');
 
@@ -11,11 +12,18 @@ app.use(express.static("public"));
 app.use("/api", api)
 
 app.get("/csp", (req, res) => {
-    // 明示的に unsafe-inline が指定されて居ないページでは、HTML内のインラインスクリプトなどは実行されない
-    res.header("Content-Security-Policy", "script-src 'self'");
+    // Note:デフォルトだと views フォルダからの相対パスがレンダリング対象となる
 
-    // デフォルトだと views フォルダからの相対パスがレンダリング対象となる
-    res.render("csp");
+    // リクエストのたびに毎回ランダムな文字列を生成し、CSP ヘッダ値に設定する
+    const nonceValue = crypto.randomBytes(16).toString("base64");
+    res.header("Content-Security-Policy", `script-src 'nonce-${nonceValue}'`);
+
+    // 明示的に unsafe-inline, nonce-source, hash-source などが指定されていないページでは、HTML内のインラインスクリプトなどは実行されない
+    // res.header("Content-Security-Policy", "script-src 'self'");
+
+
+    // 第2引数で nonce 値を HTML へ渡す
+    res.render("csp", { nonce: nonceValue });
 });
 
 app.listen(PORT, ()=> {
