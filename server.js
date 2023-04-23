@@ -1,6 +1,7 @@
 const crypto = require('crypto');
 const express = require('express');
 const api = require('./routes/api');
+const csrf = require('./routes/csrf');
 
 const app = express();
 const PORT = 3000;
@@ -9,7 +10,8 @@ app.set("view engine", "ejs");
 
 app.use(express.static("public"));
 
-app.use("/api", api)
+app.use("/api", api);
+app.use("/csrf", csrf);
 
 app.get("/csp", (req, res) => {
     // Note:デフォルトだと views フォルダからの相対パスがレンダリング対象となる
