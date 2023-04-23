@@ -39,4 +39,17 @@ router.post("/login", (req, res) => {
     res.redirect("/csrf_test.html");
 });
 
+router.post("/remit", (req, res) => {
+    // セッションに保存した情報からログイン済みか確認する
+    if(!req.session.username || req.session.username !== sessionData.username) {
+            res.status(403);
+            res.send("ログインしていません。");
+            return;
+    }
+
+    // 本来は DB の書き換えなど重要な処理が行われる
+    const { to, amount } = req.body;
+    res.send(`「${to}」へ「${amount}」円を送金しました。`);
+});
+
 module.exports = router;
