@@ -1,6 +1,7 @@
 const express = require("express");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
+const crypto = require("crypto");
 const router = express.Router();
 
 router.use(
@@ -35,6 +36,12 @@ router.post("/login", (req, res) => {
     // セッションにユーザ名を格納
     sessionData = req.session;
     sessionData.username = username;
+
+    // CSRF 対策用のトークンを発行
+    // (Double Submit Cookie)
+    const token = crypto.randomUUID();
+    res.cookie("csrf_token", token, { secre: true });
+
     // CSRF 検証用ページへリダイレクト
     res.redirect("/csrf_test.html");
 });
@@ -45,6 +52,13 @@ router.post("/remit", (req, res) => {
             res.status(403);
             res.send("ログインしていません。");
             return;
+    }
+
+    // Double Submit Cookie
+    if (req.cookies["csrf_token"] !== req.body["csrf_token"]) {
+        res.status(400);
+        res.send("不正なリクエストです。");
+        return;
     }
 
     // 本来は DB の書き換えなど重要な処理が行われる
