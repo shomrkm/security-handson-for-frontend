@@ -8,7 +8,11 @@ const PORT = 3000;
 
 app.set("view engine", "ejs");
 
-app.use(express.static("public"));
+app.use(express.static("public", {
+    setHeaders: (res, path, stat) => {
+        res.header("X-Frame-Options", "SAMEORIGIN");
+    },
+}));
 
 app.use("/api", api);
 app.use("/csrf", csrf);
@@ -25,7 +29,6 @@ app.get("/csp", (req, res) => {
         "object-src 'none';" + 
         "base-uri 'none';" +
         "require-trusted-types-for 'script';"
-
         );
 
     // 明示的に unsafe-inline, nonce-source, hash-source などが指定されていないページでは、HTML内のインラインスクリプトなどは実行されない
