@@ -19,6 +19,10 @@
                         title="8文字以上の英数字を入力してください"
                     />
                 </div>
+                <div class="signup-item">
+                    <input type="checkbox" id="display-password" />
+                    <label for="display-password">パスワードを表示する</label>
+                </div>
                 <p><small>パスワードには8文字以上の英数字を入力してください</small></p>
                 <button id="submit" type="submit">アカウント作成</button>
             </fieldset>
@@ -35,6 +39,17 @@
                     password.setCustomValidity("");
                 }
             });
+
+            const checkbox = document.querySelector("#display-password");
+            console.log(checkbox);
+            checkbox.addEventListener("click", () => {
+                if (checkbox.checked === true) {
+                    password.type = "text";
+                }
+                else {
+                    password.type = "password";
+                }
+            })
         </script>
     </body>
 </html>
