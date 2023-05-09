@@ -13,15 +13,28 @@
                     <input id="username" type="email" name="username" class="signup-input" required />
                 </div>
                 <div>
-                    <label id="password">パスワード</label>
+                    <label for="password">パスワード</label>
                     <input id="password" type="password" name="password" class="signup-input" required 
                         pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" 
-                        title="パスワードには8文字以上の英数字を入力してください"
+                        title="8文字以上の英数字を入力してください"
                     />
                 </div>
                 <p><small>パスワードには8文字以上の英数字を入力してください</small></p>
                 <button id="submit" type="submit">アカウント作成</button>
             </fieldset>
         </form>
+        <script>
+            const btn = document.querySelector("#submit");
+            const password = document.querySelector("#password");
+            btn.addEventListener("click", () => {
+                if (!/^[A-Za-z\d]{8,}$/.test(password.value)) {
+                    password.setCustomValidity("8文字以上の英数字を入力してください");
+                } else if (!/(?=.*[A-Za-z])(?=.*\d)/.test(password.value)) {
+                    password.setCustomValidity("英数字を少なくとも1文字ずつ入力してください");
+                } else {
+                    password.setCustomValidity("");
+                }
+            });
+        </script>
     </body>
 </html>
