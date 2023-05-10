@@ -10,13 +10,14 @@
                 <legend class="form-caption">アカウント作成</legend>
                 <div>
                     <label for="username">メールアドレス</label>
-                    <input id="username" type="email" name="username" class="signup-input" required />
+                    <input id="username" type="email" name="username" class="signup-input" required autocomplete="email" />
                 </div>
                 <div>
                     <label for="password">パスワード</label>
                     <input id="password" type="password" name="password" class="signup-input" required 
                         pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" 
                         title="8文字以上の英数字を入力してください"
+                        autocomplete="new-password"
                     />
                 </div>
                 <div class="signup-item">
@@ -41,7 +42,6 @@
             });
 
             const checkbox = document.querySelector("#display-password");
-            console.log(checkbox);
             checkbox.addEventListener("click", () => {
                 if (checkbox.checked === true) {
                     password.type = "text";
