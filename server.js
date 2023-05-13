@@ -13,6 +13,8 @@ app.set("view engine", "ejs");
 app.use(express.static("public", {
     setHeaders: (res, path, stat) => {
         res.header("X-Frame-Options", "SAMEORIGIN");
+        // 期限切れを試すために60秒で設定している　
+        res.header("Strict-Transport-Security", "max-age=60");
     },
 }));
 
