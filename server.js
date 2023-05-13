@@ -1,6 +1,8 @@
 const crypto = require('crypto');
 const express = require('express');
 const api = require('./routes/api');
+const https = require("https");
+const fs = require("fs");
 const csrf = require('./routes/csrf');
 
 const app = express();
@@ -47,5 +49,17 @@ app.post("/signup", (req, res) => {
 });
 
 app.listen(PORT, ()=> {
-    console.log(`Server is running on http//localhost:${PORT}`)
+    console.log(`Server is running on http://localhost:${PORT}`)
 });
+
+const HTTPS_PORT = 443;
+// HTTPS サーバを起動する
+https.createServer(
+    {
+        key: fs.readFileSync("localhost+1-key.pem"),
+        cert: fs.readFileSync("localhost+1.pem"),
+    },
+    app,
+    ).listen(HTTPS_PORT, function () {
+        console.log(`Server is running on https://localhost:${HTTPS_PORT}`);
+    });

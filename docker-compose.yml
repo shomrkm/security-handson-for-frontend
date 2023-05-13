@@ -8,6 +8,7 @@ services:
     working_dir: /usr/src/security-handson
     ports:
       - 3000:3000
+      - 443:443
     volumes:
       - .:/usr/src/security-handson:cached
       - node_modules:/usr/src/security-handson/node_modules
