@@ -6,9 +6,18 @@ const fs = require("fs");
 const csrf = require('./routes/csrf');
 
 const app = express();
-const PORT = 3000;
+const PORT = 80;
 
 app.set("view engine", "ejs");
+
+// HTTPS サーバへリダイレクトする
+app.use((req, res, next) => {
+    if (req.secure) {
+        next();
+    } else {
+        res.redirect(`https://${req.hostname}`);
+    }
+});
 
 app.use(express.static("public", {
     setHeaders: (res, path, stat) => {
@@ -31,7 +40,7 @@ app.get("/csp", (req, res) => {
     res.header("Content-Security-Policy",
         `script-src 'nonce-${nonceValue}' 'strict-dynamic';` + 
         "object-src 'none';" + 
-        "base-uri 'none';" +
+    "base-uri 'none';" +
         "require-trusted-types-for 'script';"
         );
 
